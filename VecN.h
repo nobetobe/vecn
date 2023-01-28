@@ -2,6 +2,8 @@
 #define VECN_H
 
 #include <cstring>
+#include <cmath>
+#include <fstream>
 
 template<typename T, unsigned N>
 class Vec
@@ -65,6 +67,37 @@ public:
         return res;
     }
 
+    T magSqrd() {
+        T res = 0;
+        for (unsigned i = 0; i < N; i++)
+            res += mData[i] * mData[i];
+        return res;
+    }
+
+    T mag() {
+        return std::sqrt(magSqrd());
+    }
+
+    Vec<T, N> normal() {
+        return this->operator/(mag());
+    }
+
+    T dot(const Vec<T, N> &other) {
+        T res = 0;
+        for (unsigned i = 0; i < N; i++)
+            res += mData[i] * other.mData[i];
+        return res;
+    }
+
+
+    friend std::ostream &operator<<(std::ostream &os, const Vec<T, N> &vec) {
+        os << '(';
+        for (unsigned i = 0; i < N-1; i++) {
+            os << vec[i] << ", ";
+        }
+        os << vec[N-1] << ')';
+        return os;
+    }
 };
 
 
